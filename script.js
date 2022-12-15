@@ -149,7 +149,9 @@ btnLogin.addEventListener("click", function (e) {
   );
   console.log(currentAccount);
 
-  if (currentAccount?.pin === Number(inputLoginPin.value)) {
+  if (!currentAccount) return;
+
+  if (currentAccount.pin === Number(inputLoginPin.value)) {
     // Display UI and message
     labelWelcome.textContent = `Welcome back, ${
       currentAccount.owner.split(" ")[0]
@@ -186,3 +188,32 @@ btnTransfer.addEventListener("click", function (e) {
     updateUI(currentAccount);
   }
 });
+
+btnClose.addEventListener("click", function (e) {
+  e.preventDefault();
+
+  if (
+    inputCloseUsername.value === currentAccount.username &&
+    Number(inputClosePin.value) === currentAccount.pin
+  ) {
+    const idxToDelete = accounts.findIndex(
+      (acc) => acc.username === inputCloseUsername.value
+    );
+    console.log(`account: ${inputCloseUsername.value} deleted`);
+    accounts.splice(idxToDelete, 1);
+    containerApp.style.opacity = 0;
+  }
+});
+
+btnLoan.addEventListener('click', function(e) {
+  e.preventDefault();
+
+  const loanAmount = Number(inputLoanAmount.value);
+
+  if (loanAmount > 0 && currentAccount.movements.some(mov => mov >= loanAmount * 0.1)) {
+    currentAccount.movements.push(loanAmount);
+    
+    updateUI(currentAccount);
+  }
+
+})
