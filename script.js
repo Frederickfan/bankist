@@ -205,15 +205,36 @@ btnClose.addEventListener("click", function (e) {
   }
 });
 
-btnLoan.addEventListener('click', function(e) {
+btnLoan.addEventListener("click", function (e) {
   e.preventDefault();
 
   const loanAmount = Number(inputLoanAmount.value);
 
-  if (loanAmount > 0 && currentAccount.movements.some(mov => mov >= loanAmount * 0.1)) {
+  if (
+    loanAmount > 0 &&
+    currentAccount.movements.some((mov) => mov >= loanAmount * 0.1)
+  ) {
     currentAccount.movements.push(loanAmount);
-    
+
     updateUI(currentAccount);
   }
+});
 
-})
+labelBalance.addEventListener("click", function () {
+  const movementsValues = Array.from(
+    document.querySelectorAll(".movements__value")
+  );
+  console.log(movementsValues);
+  const movementsUI = Array.from(movementsValues, (elem) =>
+    parseInt(elem.textContent)
+  );
+  console.log(movementsUI);
+});
+
+let sorted = false;
+btnSort.addEventListener("click", function (e) {
+  e.preventDefault();
+
+  displayMovements(currentAccount.movements, sorted);
+  sorted = !sorted;
+});
